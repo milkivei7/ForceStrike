@@ -20,7 +20,8 @@ AFirstPawn::AFirstPawn()
 	SpringArm->SetupAttachment(Mesh);
 	Camera->SetupAttachment(SpringArm);
 
-	
+	PawnMovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>("PawnMovementComponent");
+
 
 }
 
@@ -38,18 +39,36 @@ void AFirstPawn::Tick(float DeltaTime)
 
 }
 
+
+
 // Called to bind functionality to input
 void AFirstPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	PlayerInputComponent->BindAxis("MoveForward", this, &AFirstPawn::MoveForward);
 	PlayerInputComponent->BindAxis("MoveLeft", this, &AFirstPawn::MoveLeft);
+	PlayerInputComponent->BindAxis("MouseUD", this, &AFirstPawn::MouseUD);
+	PlayerInputComponent->BindAxis("MouseLR", this, &AFirstPawn::MouseLR);
 }
 
-void AFirstPawn::MoveForward(float Axis) {
-	AddMovementInput(GetActorForwardVector(), Axis);
-}
-void AFirstPawn::MoveLeft(float Axis) {
-	AddMovementInput(GetActorRightVector(), Axis);
+void AFirstPawn::MoveForward(float Axis) 
+{
+	UE_LOG(LogTemp, Warning, TEXT("Move forward: %f"), Axis)
+	AddMovementInput(GetActorForwardVector(), Axis, false);
 }
 
+void AFirstPawn::MoveLeft(float Axis) 
+{
+	UE_LOG(LogTemp, Warning, TEXT("Move left/right: %f"), Axis)
+	AddMovementInput(GetActorRightVector(), Axis, false);
+}
+
+void AFirstPawn::MouseUD(float Axis)
+{
+	AddControllerPitchInput(-Axis);
+}
+
+void AFirstPawn::MouseLR(float Axis)
+{
+	AddControllerYawInput(Axis);
+}
