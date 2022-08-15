@@ -9,18 +9,36 @@
 AFirstPawn::AFirstPawn()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+
+	
 	PrimaryActorTick.bCanEverTick = true;
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
+	RootComponent = Mesh;
+	
+	
+	//Create Camera
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
 	Camera = CreateDefaultSubobject<UCameraComponent>("Camera");
-	Camera->SetRelativeLocation(FVector(0.0f, 0.0f, 64.0f));
+	Camera->SetRelativeLocation(FVector(-120.0f, 0.0f, 214.0f));
+	Camera->SetRelativeRotation(FRotator(-21.0f, 0.0f, 0.0f));
 	Camera->bUsePawnControlRotation = true;
+	
+	//Create SkeletalMesh
+	SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>("SkeletanMesh");
+	SkeletalMesh->SetRelativeLocation(FVector(200.0f, 0.0f, 0.0f ));
+	SkeletalMesh->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));	
+	
+	bUseControllerRotationPitch = true;
+	bUseControllerRotationYaw = true;
 
-	RootComponent = Mesh;
+
 	SpringArm->SetupAttachment(Mesh);
+	SkeletalMesh->SetupAttachment(SpringArm);
 	Camera->SetupAttachment(SpringArm);
+	
 
 	PawnMovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>("PawnMovementComponent");
+
 
 
 }

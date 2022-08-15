@@ -4,8 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/FloatingPawnMovement.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/Pawn.h"
@@ -30,18 +32,23 @@ protected:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* Mesh;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	USpringArmComponent* SpringArm;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	UCameraComponent* Camera;
 	
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Components")
 	class UFloatingPawnMovement* PawnMovementComponent;
+
+	UPROPERTY(BlueprintReadWrite, EditAnyWhere)
+	USkeletalMeshComponent* SkeletalMesh;
 	
 	
 
 public:	
+
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
