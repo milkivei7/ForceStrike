@@ -14,4 +14,6 @@ class FORCESTRIKE_API AForceStrikeGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+	public:
+		AForceStrikeGameModeBase();
 };
