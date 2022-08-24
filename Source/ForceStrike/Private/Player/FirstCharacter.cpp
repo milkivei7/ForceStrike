@@ -3,6 +3,7 @@
 
 #include "Player/FirstCharacter.h"
 
+
 // Sets default values
 AFirstCharacter::AFirstCharacter()
 {
@@ -18,19 +19,22 @@ AFirstCharacter::AFirstCharacter()
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
     CameraComponent->SetupAttachment(SpringArm);
 
+    
+    
 }
 
 // Called when the game starts or when spawned
 void AFirstCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+    GetCharacterMovement()->MaxWalkSpeed = DefaultSpeedCharacter;
 }
 
 // Called every frame
 void AFirstCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+    
 
 }
 
@@ -42,19 +46,31 @@ void AFirstCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
     PlayerInputComponent->BindAxis("MoveLeft", this, &AFirstCharacter::MoveLeft);
     PlayerInputComponent->BindAxis("MouseUD", this, &AFirstCharacter::AddControllerPitchInput);
     PlayerInputComponent->BindAxis("MouseLR", this, &AFirstCharacter::AddControllerYawInput);
+    PlayerInputComponent->BindAxis("Sprint", this, &AFirstCharacter::Sprint);
 
+    PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AFirstCharacter::Jump);
 
+    
 }
 
 void AFirstCharacter::MoveForward(float Axis)
 {
-    UE_LOG(LogTemp, Warning, TEXT("Move Forward: %f"), Axis)
+    //UE_LOG(LogTemp, Warning, TEXT("Move Forward: %f"), Axis)
     AddMovementInput(GetActorForwardVector(), Axis, false);
 }
 
 void AFirstCharacter::MoveLeft(float Axis)
 {
-    UE_LOG(LogTemp, Warning, TEXT("Move Left,Right: %f"), Axis)
+    //UE_LOG(LogTemp, Warning, TEXT("Move Left,Right: %f"), Axis)
     AddMovementInput(GetActorRightVector(), Axis, false);
 }
+
+void AFirstCharacter::Sprint(float SprintValue)
+{
+   
+    SprintValue ? GetCharacterMovement()->MaxWalkSpeed = DefaultSpeedCharacter * 2
+                : GetCharacterMovement()->MaxWalkSpeed = DefaultSpeedCharacter;
+}
+
+
 

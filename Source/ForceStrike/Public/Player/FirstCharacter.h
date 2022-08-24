@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 #include "GameFramework/Character.h"
 #include "FirstCharacter.generated.h"
@@ -32,14 +33,19 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Components")
     USpringArmComponent *SpringArm;
 
-public:	
+	UPROPERTY(EditAnywhere, Category = "Components")
+    float DefaultSpeedCharacter = 600.0f;
+	
+  public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	
+
 	void MoveForward(float Axis);
     void MoveLeft(float Axis);
-
+    void Sprint(float SprintValue);
 };
