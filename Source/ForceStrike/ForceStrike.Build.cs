@@ -12,7 +12,7 @@ public class ForceStrike : ModuleRules
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
-		PublicIncludePaths.AddRange(new string[] { "ForceStrike/Public/Player" });
+		PublicIncludePaths.AddRange(new string[] { "ForceStrike/Public/Player", "ForceStrike/Public/Components" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

@@ -2,10 +2,10 @@
 
 
 #include "Player/FirstCharacter.h"
-
+#include "Components/MyCharacterMovementComponent.h"
 
 // Sets default values
-AFirstCharacter::AFirstCharacter()
+AFirstCharacter::AFirstCharacter(const FObjectInitializer &ObjInit): Super(ObjInit.SetDefaultSubobjectClass<UMyCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -30,6 +30,8 @@ void AFirstCharacter::BeginPlay()
     GetCharacterMovement()->MaxWalkSpeed = DefaultSpeedCharacter;
 }
 
+
+
 // Called every frame
 void AFirstCharacter::Tick(float DeltaTime)
 {
@@ -46,17 +48,23 @@ void AFirstCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
     PlayerInputComponent->BindAxis("MoveLeft", this, &AFirstCharacter::MoveLeft);
     PlayerInputComponent->BindAxis("MouseUD", this, &AFirstCharacter::AddControllerPitchInput);
     PlayerInputComponent->BindAxis("MouseLR", this, &AFirstCharacter::AddControllerYawInput);
-    PlayerInputComponent->BindAxis("Sprint", this, &AFirstCharacter::Sprint);
+    
+    //PlayerInputComponent->BindAxis("Sprint", this, &AFirstCharacter::Sprint);
 
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &AFirstCharacter::Jump);
+    PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AFirstCharacter::OnStartSprint);
+    PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AFirstCharacter::OnStopSprint);
 
     
 }
 
+
 void AFirstCharacter::MoveForward(float Axis)
 {
     //UE_LOG(LogTemp, Warning, TEXT("Move Forward: %f"), Axis)
+    IsMovingForward = Axis > 0.0f;
     AddMovementInput(GetActorForwardVector(), Axis, false);
+
 }
 
 void AFirstCharacter::MoveLeft(float Axis)
@@ -65,12 +73,25 @@ void AFirstCharacter::MoveLeft(float Axis)
     AddMovementInput(GetActorRightVector(), Axis, false);
 }
 
-void AFirstCharacter::Sprint(float SprintValue)
+/* void AFirstCharacter::Sprint(float SprintValue)
 {
-   
-    SprintValue ? GetCharacterMovement()->MaxWalkSpeed = DefaultSpeedCharacter * 2
+    SprintButtomPressed = true;
+    IsRunning() && SprintValue ? GetCharacterMovement()->MaxWalkSpeed = DefaultSpeedCharacter * 2
                 : GetCharacterMovement()->MaxWalkSpeed = DefaultSpeedCharacter;
+}*/
+void AFirstCharacter::OnStartSprint()
+{
+    CanBeRunning = true;
+    
 }
 
+void AFirstCharacter::OnStopSprint()
+{
+    CanBeRunning = false;
+}
 
+bool AFirstCharacter::IsRunning() const
+{
+    return IsMovingForward && CanBeRunning && !GetVelocity().IsZero();
+}
 

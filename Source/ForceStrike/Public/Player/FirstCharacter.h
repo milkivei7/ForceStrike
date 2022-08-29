@@ -5,11 +5,14 @@
 #include "CoreMinimal.h"
 
 #include "Camera/CameraComponent.h"
+
 #include "Components/InputComponent.h"
+
+
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-
 #include "GameFramework/Character.h"
+
 #include "FirstCharacter.generated.h"
 
 
@@ -21,7 +24,8 @@ class FORCESTRIKE_API AFirstCharacter : public ACharacter
 
 public:
 	// Sets default values for this character's properties
-	AFirstCharacter();
+	AFirstCharacter(const FObjectInitializer& ObjInit);
+	
 
 protected:
 	// Called when the game starts or when spawned
@@ -36,16 +40,29 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Components")
     float DefaultSpeedCharacter = 600.0f;
 	
+	
+	
+
   public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	
+	UFUNCTION(BlueprintCallable, Category = "Components")
+    bool IsRunning() const;
+	
+
+  private:
+    bool SprintButtomPressed = false;
+    bool CanBeRunning = false;
+    bool IsMovingForward = false;
+
+	void OnStartSprint();
+    void OnStopSprint();
 
 	void MoveForward(float Axis);
     void MoveLeft(float Axis);
-    void Sprint(float SprintValue);
+    
 };
