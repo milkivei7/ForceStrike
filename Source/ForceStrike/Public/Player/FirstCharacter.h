@@ -15,7 +15,8 @@
 
 #include "FirstCharacter.generated.h"
 
-
+class UForceStrikeHealthComponent;
+class UTextRenderComponent;
 
 UCLASS()
 class FORCESTRIKE_API AFirstCharacter : public ACharacter
@@ -34,13 +35,17 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UCameraComponent* CameraComponent;
 
-	UPROPERTY(EditAnywhere, Category = "Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     USpringArmComponent *SpringArm;
 
-	UPROPERTY(EditAnywhere, Category = "Components")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     float DefaultSpeedCharacter = 600.0f;
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    UForceStrikeHealthComponent *HealthComponent;
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    UTextRenderComponent *HealthTextComponent;
 	
 
   public:	

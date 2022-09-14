@@ -3,9 +3,15 @@
 
 #include "Player/FirstCharacter.h"
 #include "Components/MyCharacterMovementComponent.h"
+#include "Components/ForceStrikeHealthComponent.h"
+
+#include "Components/ForceStrikeHealthComponent.h"
+#include "Components/TextRenderComponent.h"
+
 
 // Sets default values
-AFirstCharacter::AFirstCharacter(const FObjectInitializer &ObjInit): Super(ObjInit.SetDefaultSubobjectClass<UMyCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
+AFirstCharacter::AFirstCharacter(const FObjectInitializer &ObjInit): 
+    Super(ObjInit.SetDefaultSubobjectClass<UMyCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -19,8 +25,11 @@ AFirstCharacter::AFirstCharacter(const FObjectInitializer &ObjInit): Super(ObjIn
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
     CameraComponent->SetupAttachment(SpringArm);
 
+    HealthComponent = CreateDefaultSubobject<UForceStrikeHealthComponent>("HealthComponent");
     
-    
+
+    HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
+    HealthTextComponent->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
@@ -28,6 +37,7 @@ void AFirstCharacter::BeginPlay()
 {
 	Super::BeginPlay();
     GetCharacterMovement()->MaxWalkSpeed = DefaultSpeedCharacter;
+    HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), HealthComponent->GetHealth())));
 }
 
 
@@ -37,6 +47,7 @@ void AFirstCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
     
+    //const auto Health = HealthComponent->GetHealth();
 
 }
 
