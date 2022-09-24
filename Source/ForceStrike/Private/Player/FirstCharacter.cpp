@@ -82,17 +82,12 @@ void AFirstCharacter::MoveForward(float Axis)
 
 void AFirstCharacter::MoveLeft(float Axis)
 {
-    //UE_LOG(LogTemp, Warning, TEXT("Move Left,Right: %f"), Axis)
+    
     if(Axis==0.0f) return; 
     AddMovementInput(GetActorRightVector(), Axis, false);
 }
 
-/* void AFirstCharacter::Sprint(float SprintValue)
-{
-    SprintButtomPressed = true;
-    IsRunning() && SprintValue ? GetCharacterMovement()->MaxWalkSpeed = DefaultSpeedCharacter * 2
-                : GetCharacterMovement()->MaxWalkSpeed = DefaultSpeedCharacter;
-}*/
+
 void AFirstCharacter::OnStartSprint()
 {
     CanBeRunning = true;
