@@ -55,9 +55,12 @@ protected:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	UFUNCTION(BlueprintCallable, Category = "Components")
+	UFUNCTION(BlueprintCallable, Category = "Movement")
     bool IsRunning() const;
-	
+
+    UFUNCTION(BlueprintCallable, Category = "Movement")
+    float GetMovementDirection() const;
+    
 
   private:
     bool SprintButtomPressed = false;

@@ -73,7 +73,9 @@ void AFirstCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 void AFirstCharacter::MoveForward(float Axis)
 {
     //UE_LOG(LogTemp, Warning, TEXT("Move Forward: %f"), Axis)
+    
     IsMovingForward = Axis > 0.0f;
+    if(Axis==0.0f) return; 
     AddMovementInput(GetActorForwardVector(), Axis, false);
 
 }
@@ -81,6 +83,7 @@ void AFirstCharacter::MoveForward(float Axis)
 void AFirstCharacter::MoveLeft(float Axis)
 {
     //UE_LOG(LogTemp, Warning, TEXT("Move Left,Right: %f"), Axis)
+    if(Axis==0.0f) return; 
     AddMovementInput(GetActorRightVector(), Axis, false);
 }
 
@@ -104,5 +107,16 @@ void AFirstCharacter::OnStopSprint()
 bool AFirstCharacter::IsRunning() const
 {
     return IsMovingForward && CanBeRunning && !GetVelocity().IsZero();
+}
+
+float AFirstCharacter::GetMovementDirection() const
+{
+    if (GetVelocity().IsZero()) return 0.0f;
+    const auto VelocityNormal = GetVelocity().GetSafeNormal();
+    const auto AngleBetween = FMath::Acos(FVector::DotProduct(GetActorForwardVector(),VelocityNormal));
+    const auto CrossProduct = FVector::CrossProduct(GetActorForwardVector(),VelocityNormal);
+    const auto Degrees = FMath::RadiansToDegrees(AngleBetween);
+    return CrossProduct.IsZero()? Degrees:Degrees*FMath::Sign(CrossProduct.Z);
+    
 }
 
